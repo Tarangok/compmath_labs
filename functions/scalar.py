@@ -4,18 +4,17 @@ from sympy.parsing.sympy_parser import (parse_expr,
                                         implicit_application,
                                         implicit_multiplication,
                                         convert_xor)
+from sympy.abc import x
 from math import log10, e
 
 class ScalarFunction:
     """Класс, инкапсулирующий вычисление скалярной функции, заданной в виде строки
 определенного формата"""
-    x = sympy.Symbol('x')
     def __init__(self, expr):
         # преобразования для парсера sympy
         transformations = standard_transformations + (implicit_multiplication, # умножение без знака умножения
                                                       implicit_application,  # применение скалярных ф-ий без скобок
                                                       convert_xor) # каретка как символ возведения в степень
-
         # замены для парсера
         replacers = {'e' : e,
                      'tg' : sympy.functions.tan,
@@ -30,5 +29,6 @@ class ScalarFunction:
         if self.fun.free_symbols - {x} != set():
             raise ValueError('Выражение содержит переменные кроме x')
         
-    def __call__(self, arg):
-        return float(self.fun.subs({ScalarFunction.x : arg}))
+    def __call__(self, arg, deriv=0):
+        res = self.fun if deriv == 0 else self.fun.diff(*(x for i in range(0, deriv)))
+        return float(res.subs({x : arg}))
