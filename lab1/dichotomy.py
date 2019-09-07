@@ -9,4 +9,4 @@ def dichotomy(f, a, b, eps):
         else:
             a = c
     x = (b+a)/2
-    return x, (b-a)/2, abs(f(x))
+    return x, abs((b-a)/2), abs(f(x))
