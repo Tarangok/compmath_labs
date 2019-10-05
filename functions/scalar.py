@@ -3,7 +3,8 @@ from sympy.parsing.sympy_parser import (parse_expr,
                                         standard_transformations,
                                         implicit_application,
                                         implicit_multiplication,
-                                        convert_xor)
+                                        convert_xor,
+                                        function_exponentiation)
 from sympy.abc import x
 from math import log10, e
 
@@ -14,7 +15,8 @@ class ScalarFunction:
         # преобразования для парсера sympy
         transformations = standard_transformations + (implicit_multiplication, # умножение без знака умножения
                                                       implicit_application,  # применение скалярных ф-ий без скобок
-                                                      convert_xor) # каретка как символ возведения в степень
+                                                      convert_xor,
+                                                      function_exponentiation) # каретка как символ возведения в степень
         # замены для парсера
         replacers = {'e' : e,
                      'tg' : sympy.functions.tan,
