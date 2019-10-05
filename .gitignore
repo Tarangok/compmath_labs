@@ -1,3 +1,8 @@
 *~
 tasks
+reports
+
+*.txt
 mitsel.pdf
+
+__pycache__
