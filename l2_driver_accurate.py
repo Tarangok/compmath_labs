@@ -1,14 +1,14 @@
 from sys import stdin, stdout
-from numpy import column_stack
+from numpy import column_stack, identity
 
 import lab2.reader as reader
 import lab2.gauss as gauss
 import lab2.eps as eps
 
-from lab2.writer import write_mat, write_vector
+from lab2.writer import write_mat
 
-f_in = open('l2_test.txt', 'r')
-f_out = stdout
+f_in = open('l2_test_accurate.txt', 'r')
+f_out = open('res.txt', 'w')
 
 
 try:
@@ -28,21 +28,30 @@ try:
             if i == 0:
                 continue
             f_out.write('b_{}\n'.format(i))
-            write_vector(f_out, b)
+            write_mat(f_out, b)
 
-        write_vector(f_out, x)
-        write_vector(f_out, e)
+        f_out.write('x\n')
+        write_mat(f_out, x)
+        f_out.write('eps\n')
+        write_mat(f_out, e)
+        f_out.write('norm\n')
         f_out.write(str(n))
     elif task == 2:
         d = gauss.det(A_trg)
         f_out.write(str(d))
     elif task == 3:
-        inv = gauss.inverse(A_trg)
-        for i, inv_v in enumerate(inv):
+        inv, es = gauss.inverse(A_trg)
+        for i, e in enumerate(es):
             f_out.write('e_{}\n'.format(i+1))
-            write_vector(f_out, inv_v)
+            write_mat(f_out, e)
         inv_mat = column_stack(tuple(inv))
+        f_out.write('A^(-1)\n')
         write_mat(f_out, inv_mat)
+        f_out.write('eps\n')
+        e = A.dot(inv_mat) - identity(A.shape[0])
+        write_mat(f_out, e)
+        f_out.write('norm\n')
+        f_out.write(str(eps.norm(e)))
     f_out.write('\n')
 finally:
     if f_in != stdin:
