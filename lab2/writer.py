@@ -1,9 +1,5 @@
-def write_vector(fp, v):
-    for e in v:
-        fp.write(str(float(e))+' ')
-    fp.write('\n')
+import numpy as np
 
 
-def write_mat(fp, m):
-    for s in m:
-        write_vector(fp, s)
+def write_mat(fp, m, prec=9):
+    np.savetxt(fp, m, fmt='%0.{}e'.format(prec))
