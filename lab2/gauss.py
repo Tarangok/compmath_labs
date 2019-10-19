@@ -2,7 +2,7 @@ import numpy
 
 
 def gauss_triangle(A: numpy.ndarray):
-    '''Порождает треугольные матрицу для м-да Гаусса'''
+    '''Порождает последовательность матриц для м-да Гаусса'''
     size = A.shape[0]
     ret = [A.copy()]
 
@@ -51,11 +51,14 @@ def solve(A_trg, b):
 def inverse(A_trg):
     '''По результатам gauss_triangle с помощью solve вычисляет обр. матрицу'''
     ret = []
+    es = []
     size = len(A_trg)-1
 
     for k in range(size):
         vec = numpy.zeros(size)
         vec[k] = 1.0
-        ret.append(solve(A_trg, vec)[0])
+        r, e = solve(A_trg, vec)
+        ret.append(r)
+        es.append(e[size])
 
-    return ret
+    return ret, es
