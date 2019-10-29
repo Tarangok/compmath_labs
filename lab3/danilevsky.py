@@ -40,13 +40,10 @@ def danilevsky(A: np.ndarray):
     M_inv = [None for i in range(n-1)]
 
     for i in range(n-2, -1, -1):
-        print(i)
         M[i] = make_m(A, i)
         M_inv[i] = make_m_inv(A, i)
         A_til = A.dot(M[i])
-        print(A_til)
         A = M_inv[i].dot(A_til)
-        print(A)
 
     return A, M, M_inv
 
