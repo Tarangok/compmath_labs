@@ -3,9 +3,9 @@ from numpy import column_stack, identity
 
 import lab2.reader as reader
 import lab2.gauss as gauss
-import lab2.eps as eps
+import matrix.norm as norm
 
-from lab2.writer import write_mat
+from matrix.writer import write_mat
 
 f_in = open('l2_test_accurate.txt', 'r')
 f_out = open('res.txt', 'w')
@@ -16,8 +16,8 @@ try:
     A_trg = gauss.gauss_triangle(A)
     if task == 1:
         x, b_res = gauss.solve(A_trg, b)
-        e = eps.vec_eps(A, x, b)
-        n = eps.norm(e)
+        e = norm.vec_eps(A, x, b)
+        n = norm.norm(e)
 
         for i, a in enumerate(A_trg):
             if i == 0:
