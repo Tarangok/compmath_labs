@@ -3,9 +3,13 @@ from copy import copy
 
 class PolynomialFunction:
     def __init__(self, coeffs):
-        if len(coeffs) == 0:
-            raise ValueError('Coeff list empty')
-        self.coeffs = coeffs
+        self.coeffs = list(coeffs)
+        if len(self.coeffs) == 0:
+            self.coeffs.append(0.0)
+
+    @property
+    def degree(self):
+        return len(self.coeffs)-1
 
     def deriv(self):
         new_coeffs = copy(self.coeffs)
