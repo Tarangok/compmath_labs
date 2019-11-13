@@ -3,9 +3,9 @@ from functions.polynomial import PolynomialFunction as Poly
 from functools import reduce
 
 
-def get_eigenvec(L, n):
-    # TODO: сделать получение СВ из СЧ
-    pass
+def get_frob_eigenvec(L, n):
+    '''Получение СВ для матрицы Фробениуса'''
+    return np.asarray(list(L ** (n-i-1) for i in range(n)))
 
 
 def danilevsky(A: np.ndarray):
@@ -50,7 +50,7 @@ def danilevsky(A: np.ndarray):
 
 def make_poly(P):
     '''Порождает полином из первой строки
-м-цы Фробениуса'''
+м-цы Фробениуса P'''
     return Poly([-p for p in reversed(P[0])] + [1.0])
 
 
