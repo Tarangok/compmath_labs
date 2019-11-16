@@ -1,6 +1,9 @@
 from functions.polynomial import PolynomialFunction as Poly
 import numpy.random as random
+from math import sin, cos, pi
 
+
+random.seed()
 
 def upper_bound(P: Poly):
     max_abs = max(abs(c) for c in P[:-1])
@@ -8,8 +11,7 @@ def upper_bound(P: Poly):
 
 
 def lower_bound(P: Poly):
-    Pminus = Poly(-c if i % 2 == 1 else c for i, c in enumerate(P))
-    return -upper_bound(Pminus)
+    return 0.0
 
 
 def aberth(P: Poly, eps: float = 1e-11):
@@ -21,7 +23,9 @@ def aberth(P: Poly, eps: float = 1e-11):
         return [offset(X, i) for i in range(len(X))]
 
     def get_random(a, b):
-        return a + random.random() * (b - a)
+        magnitude = random.uniform(a, b)
+        angle = random.uniform(0, 2 * pi)
+        return complex(magnitude * cos(angle), magnitude * sin(angle))
 
     random.seed()
 
