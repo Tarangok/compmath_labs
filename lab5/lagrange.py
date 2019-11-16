@@ -1,6 +1,7 @@
 from interp.grid import EquilateralGrid
 from functools import reduce
 from operator import mul
+from math import factorial
 
 
 def make_eq_grid(a, b, n):
@@ -43,8 +44,78 @@ class LagrangePolynomialN:
                 res += c * p
             return res
 
-        ders = [d0, d1]
+        def d2(x):
+            res = 0.0
+            for i, c in enumerate(self.C):
+                p = 0.0
+                for j in range(len(self.C)):
+                    if j != i:
+                        p += sum(self.phi(x, i, j, k)
+                                 for k in range(len(self.C))
+                                 if k != i and k != j)
+                res += c * p
+            return res
+
+        ders = [d0, d1, d2]
         try:
             return ders[der](x)
-        except KeyError:
+        except IndexError:
+            raise ValueError(f'Derivative {der} not supported')
+
+
+class LagrangePolynomialE:
+    '''Полином Лагранжа на равномерной сетке'''
+    def __init__(self, a, b, n, Y):
+        def coeff(bc, i):
+            return (-1) ** (n-i) * Y[i] / bc
+
+        i = 0
+        ifac = 1
+        nfac = factorial(n)
+
+        self.coeffs = []
+        while i <= n:
+            self.coeffs.append(coeff(ifac*nfac, i))
+            ifac *= i+1
+            if n != i:
+                nfac /= (n-i)
+            i += 1
+        self.step = (b-a) / n
+        self.initial = a
+
+    def phi(self, q, *excluded):
+        gen = (q - j for j in range(len(self.coeffs)) if j not in excluded)
+        return product(gen)
+
+    def __call__(self, x, der=0):
+        def d0(q):
+            return sum(c * self.phi(q, i) for i, c in enumerate(self.coeffs))
+
+        def d1(q):
+            res = 0.0
+            for i, c in enumerate(self.coeffs):
+                p = sum(self.phi(q, i, j)
+                        for j in range(len(self.coeffs))
+                        if i != j)
+                res += c * p
+            return res / self.step
+
+        def d2(q):
+            res = 0.0
+            for i, c in enumerate(self.C):
+                p = 0.0
+                for j in range(len(self.C)):
+                    if j != i:
+                        p += sum(self.phi(q, i, j, k)
+                                 for k in range(len(self.C))
+                                 if k != i and k != j)
+                res += c * p
+            return res / (self.step * self.step)
+
+        q = (x - self.initial)/self.step
+
+        ders = [d0, d1, d2]
+        try:
+            return ders[der](q)
+        except IndexError:
             raise ValueError(f'Derivative {der} not supported')
