@@ -1,11 +1,6 @@
-from interp.grid import EquilateralGrid
 from functools import reduce
 from operator import mul
 from math import factorial
-
-
-def make_eq_grid(a, b, n):
-    return EquilateralGrid(a, (b-a)/n, n+1)
 
 
 def product(S):
@@ -102,12 +97,12 @@ class LagrangePolynomialE:
 
         def d2(q):
             res = 0.0
-            for i, c in enumerate(self.C):
+            for i, c in enumerate(self.coeffs):
                 p = 0.0
-                for j in range(len(self.C)):
+                for j in range(len(self.coeffs)):
                     if j != i:
                         p += sum(self.phi(q, i, j, k)
-                                 for k in range(len(self.C))
+                                 for k in range(len(self.coeffs))
                                  if k != i and k != j)
                 res += c * p
             return res / (self.step * self.step)
