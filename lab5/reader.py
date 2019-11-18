@@ -1,6 +1,4 @@
 from typing import TextIO
-from interp.grid import EquilateralGrid, NonequilateralGrid
-from lab5.lagrange import make_eq_grid
 from functions.scalar import ScalarFunction
 
 
@@ -22,7 +20,7 @@ def read_task(fp: TextIO):
     Y = [float(r) for r in fp.readline().split(' ')]
     m = int(fp.readline())  # не исп.
     Xres = [float(r) for r in fp.readline().split(' ')]
-    if len(Xres) != m:
+    if len(Xres) != m+1:
         raise ValueError(f'Res grid not of length {m}')
     f = fp.readline()
     F = ScalarFunction(f) if f != '' else None
