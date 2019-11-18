@@ -5,8 +5,17 @@ from sys import stdin, stdout
 from math import sqrt
 
 
-f_in = open('lab5/l5_test_neq.txt', 'r')
-f_out = stdout
+print('Pick test file\n1-equilat grid\n2-nonequilat grid\n')
+choice = int(input())
+
+if not 0 < choice < 3:
+    raise ValueError('bad choice')
+
+files = ['lab5/l5_test_eq.txt', 'lab5/l5_test_neq.txt']
+
+f_in = open(files[choice-1], 'r')
+f_out = open('res.txt', 'w')
+
 
 try:
     t, X, Y, Xr, F, der = read_task(f_in)
